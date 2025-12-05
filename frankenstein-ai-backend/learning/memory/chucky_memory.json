@@ -1,0 +1,12 @@
+{
+  "agent": "chucky",
+  "total_interactions": 0,
+  "successful_patterns": [],
+  "feedback_learnings": [],
+  "performance_metrics": {
+    "average_rating": 0.0,
+    "approval_rate": 0.0,
+    "iteration_count": 0.0
+  },
+  "last_updated": "2025-11-24T19:17:19.468537"
+}
