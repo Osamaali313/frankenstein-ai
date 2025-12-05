@@ -1,9 +1,5 @@
 # 🧟 Frankenstein.AI
 
-<p align="center">
-  <img src="LOGO.webp" alt="Frankenstein.AI Logo" width="200"/>
-</p>
-
 > A horror-themed multi-agent AI coding assistant where each specialist is a legendary horror character with unique expertise and personality.
 
 ![Version](https://img.shields.io/badge/version-2.0.0-green.svg)
