@@ -7,8 +7,8 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '10mb'
     }
   },
-  // Increase API route timeout for long-running streams
-  serverComponentsExternalPackages: ['@anthropic-ai/sdk']
+  // External packages for server components (Next.js 16+)
+  serverExternalPackages: ['@anthropic-ai/sdk']
 };
 
 export default nextConfig;
