@@ -1,11 +1,16 @@
 # 🧟 Frankenstein.AI
 
+<p align="center">
+  <img src="LOGO.webp" alt="Frankenstein.AI Logo" width="200"/>
+</p>
+
 > A horror-themed multi-agent AI coding assistant where each specialist is a legendary horror character with unique expertise and personality.
 
-![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
+![Version](https://img.shields.io/badge/version-2.0.0-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
-![Next.js](https://img.shields.io/badge/next.js-16.0-black.svg)
+![Next.js](https://img.shields.io/badge/next.js-15-black.svg)
+![Claude](https://img.shields.io/badge/Claude-Sonnet_4-orange.svg)
 
 ## 🎭 Overview
 
@@ -43,7 +48,7 @@ Frankenstein.AI is an intelligent multi-agent system that combines the power of 
 
 ┌──────────────────────────────────────────────────────────────────┐
 │                         FRONTEND LAYER                            │
-│                    (Next.js 16 + TypeScript)                      │
+│                    (Next.js 15 + TypeScript)                      │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                   │
 │  ┌─────────────┐  ┌──────────────┐  ┌────────────────────┐     │
@@ -409,7 +414,7 @@ npm run build
 - **Uvicorn** - ASGI server
 
 ### Frontend
-- **Next.js 16** - React framework
+- **Next.js 15** - React framework
 - **TypeScript** - Type safety
 - **Tailwind CSS** - Styling
 - **Monaco Editor** - Code editor
