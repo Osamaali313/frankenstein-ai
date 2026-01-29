@@ -10,10 +10,10 @@ import { ChatPanel, Document } from '@/components/chat/ChatPanel'
 import { LearningDashboard } from '@/components/learning/LearningDashboard'
 import { CodeExecutor } from '@/components/studio/CodeExecutor'
 import { DocumentCanvas } from '@/components/studio/DocumentCanvas'
+import { SandpackPreview } from '@/components/studio/SandpackPreview'
 import { FileNode, Agent } from '@/types'
 import { sampleFiles, flattenFiles } from '@/lib/file-system'
-// Removed ProjectService - no backend needed
-import { Code2, MessageSquare, FolderTree, X, Sparkles, Brain, Play, Save } from 'lucide-react'
+import { Code2, MessageSquare, FolderTree, X, Sparkles, Brain, Play, Save, Eye } from 'lucide-react'
 import { useToast } from '@/lib/hooks/use-toast'
 import { ModeToggle } from '@/components/studio/ModeToggle'
 import { ModelSelector } from '@/components/studio/ModelSelector'
@@ -100,6 +100,7 @@ export default function StudioPage() {
   const [initialPrompt, setInitialPrompt] = useState<string | null>(null)
   const [isCreatingProject, setIsCreatingProject] = useState(false)
   const [documents, setDocuments] = useState<Document[]>([])
+  const [showPreview, setShowPreview] = useState(false)
 
   const fileMap = flattenFiles(fileSystem)
 
@@ -129,7 +130,7 @@ export default function StudioPage() {
   // Load all project files when file system changes (for preview)
   useEffect(() => {
     if (currentProject && fileSystem.length > 0) {
-      getAllProjectFiles().then(setAllProjectFiles)
+      setAllProjectFiles(getAllProjectFiles())
     }
   }, [fileSystem, selectedFile])
 
@@ -206,7 +207,7 @@ export default function StudioPage() {
   }
 
   // Collect all files for preview (Sandpack) - in-memory only
-  const getAllProjectFiles = async (): Promise<Record<string, string>> => {
+  const getAllProjectFiles = (): Record<string, string> => {
     const files: Record<string, string> = {}
 
     // Recursively collect all files from in-memory fileSystem
@@ -334,6 +335,14 @@ export default function StudioPage() {
             <div className="h-8 w-px bg-white/10" />
 
             <button
+              onClick={() => setShowPreview(!showPreview)}
+              className="px-3 py-1.5 text-sm rounded-md bg-white/5 hover:bg-white/10 text-white transition-colors flex items-center gap-2 border border-white/10"
+            >
+              <Eye className="w-4 h-4" />
+              Preview
+            </button>
+
+            <button
               onClick={() => setShowChat(!showChat)}
               className="px-3 py-1.5 text-sm rounded-md bg-white/5 hover:bg-white/10 text-white transition-colors flex items-center gap-2 border border-white/10"
             >
@@ -384,9 +393,20 @@ export default function StudioPage() {
 
       {/* Main Content */}
       <div className="relative z-10 flex-1 flex overflow-hidden">
-        {/* Document Canvas */}
+        {/* Document Canvas or Preview */}
         <div className="flex-1 flex flex-col min-w-0">
-          <DocumentCanvas documents={documents} />
+          {showPreview ? (
+            <div className="h-full p-4">
+              <SandpackPreview
+                files={allProjectFiles}
+                activeFile={selectedFilePath}
+                showEditor={false}
+                onClose={() => setShowPreview(false)}
+              />
+            </div>
+          ) : (
+            <DocumentCanvas documents={documents} />
+          )}
         </div>
 
         {/* Chat Panel */}
