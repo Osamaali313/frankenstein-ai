@@ -129,8 +129,25 @@ export default function StudioPage() {
 
   // Load all project files when file system changes (for preview)
   useEffect(() => {
-    if (currentProject && fileSystem.length > 0) {
-      setAllProjectFiles(getAllProjectFiles())
+    if (fileSystem.length > 0) {
+      const files: Record<string, string> = {}
+
+      // Recursively collect all files from in-memory fileSystem
+      const collectFiles = (nodes: FileNode[], currentPath: string = ''): void => {
+        for (const node of nodes) {
+          const nodePath = currentPath ? `${currentPath}/${node.name}` : node.name
+          if (node.type === 'file') {
+            files[`/${nodePath}`] = node.content || ''
+          } else if (node.type === 'folder' && node.children) {
+            collectFiles(node.children, nodePath)
+          }
+        }
+      }
+
+      collectFiles(fileSystem)
+      setAllProjectFiles(files)
+    } else {
+      setAllProjectFiles({})
     }
   }, [fileSystem, selectedFile])
 
