@@ -13,7 +13,7 @@ import { DocumentCanvas } from '@/components/studio/DocumentCanvas'
 import { SandpackPreview } from '@/components/studio/SandpackPreview'
 import { FileNode, Agent } from '@/types'
 import { sampleFiles, flattenFiles } from '@/lib/file-system'
-import { Code2, MessageSquare, FolderTree, X, Sparkles, Brain, Play, Save, Eye } from 'lucide-react'
+import { Code2, MessageSquare, FolderTree, X, Sparkles, Brain, Play, Save, Eye, Plus } from 'lucide-react'
 import { useToast } from '@/lib/hooks/use-toast'
 import { ModeToggle } from '@/components/studio/ModeToggle'
 import { ModelSelector } from '@/components/studio/ModelSelector'
@@ -393,20 +393,185 @@ export default function StudioPage() {
 
       {/* Main Content */}
       <div className="relative z-10 flex-1 flex overflow-hidden">
-        {/* Document Canvas or Preview */}
-        <div className="flex-1 flex flex-col min-w-0">
-          {showPreview ? (
-            <div className="h-full p-4">
-              <SandpackPreview
-                files={allProjectFiles}
-                activeFile={selectedFilePath}
-                showEditor={false}
-                onClose={() => setShowPreview(false)}
-              />
+        {/* File Tree Sidebar */}
+        {showFileTree && (
+          <div className="w-64 flex-shrink-0 border-r border-white/10 bg-black/30 overflow-y-auto">
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-semibold text-white">FILES</h3>
+                <button
+                  onClick={() => {
+                    const fileName = prompt('Enter file name (e.g., App.tsx):')
+                    if (fileName) {
+                      const newFile: FileNode = {
+                        name: fileName,
+                        type: 'file',
+                        content: `// ${fileName}\n\n`
+                      }
+                      setFileSystem([...fileSystem, newFile])
+                      handleFileSelect(newFile)
+                      toast({
+                        title: 'File Created',
+                        description: `${fileName} has been created`
+                      })
+                    }
+                  }}
+                  className="p-1 text-[#FA6D1B] hover:bg-white/10 rounded"
+                  title="New File"
+                >
+                  <Plus className="w-4 h-4" />
+                </button>
+              </div>
+              {fileSystem.length > 0 ? (
+                <FileTree
+                  nodes={fileSystem}
+                  onFileSelect={(file) => handleFileSelect(file)}
+                  selectedPath={selectedFilePath}
+                />
+              ) : (
+                <div className="text-sm text-gray-400 space-y-3">
+                  <p>No files yet</p>
+                  <button
+                    onClick={() => {
+                      const defaultFiles: FileNode[] = [
+                        {
+                          name: 'App.tsx',
+                          type: 'file',
+                          content: `import React from 'react'
+
+export default function App() {
+  return (
+    <div style={{ padding: '2rem', fontFamily: 'system-ui' }}>
+      <h1 style={{ color: '#FA6D1B', fontSize: '2.5rem' }}>
+        🧟 Frankenstein.AI
+      </h1>
+      <p style={{ color: '#666', marginTop: '1rem' }}>
+        Start building with your horror AI agents!
+      </p>
+      <button
+        style={{
+          marginTop: '1rem',
+          padding: '0.5rem 1rem',
+          background: '#FA6D1B',
+          color: 'white',
+          border: 'none',
+          borderRadius: '0.5rem',
+          cursor: 'pointer'
+        }}
+        onClick={() => alert('Hello from Frankenstein.AI!')}
+      >
+        Click Me
+      </button>
+    </div>
+  )
+}`
+                        },
+                        {
+                          name: 'index.tsx',
+                          type: 'file',
+                          content: `import React from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App'
+
+const root = createRoot(document.getElementById('root')!)
+root.render(<App />)`
+                        }
+                      ]
+                      setFileSystem(defaultFiles)
+                      handleFileSelect(defaultFiles[0])
+                      toast({
+                        title: 'Starter Files Created',
+                        description: 'Created React starter files - click Preview to see them!'
+                      })
+                    }}
+                    className="w-full px-3 py-2 text-xs bg-[#FA6D1B] hover:bg-[#F25C07] text-white rounded transition-colors"
+                  >
+                    Create Starter Files
+                  </button>
+                </div>
+              )}
             </div>
-          ) : (
-            <DocumentCanvas documents={documents} />
+          </div>
+        )}
+
+        {/* Editor + Preview Area */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Open Files Tabs */}
+          {openFiles.length > 0 && (
+            <div className="flex items-center gap-1 px-4 py-2 bg-black/30 border-b border-white/10 overflow-x-auto">
+              {openFiles.map((file) => (
+                <div
+                  key={file.name}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-t-md text-sm cursor-pointer transition-colors ${
+                    selectedFile?.name === file.name
+                      ? 'bg-black/40 text-white border-t border-l border-r border-white/10'
+                      : 'bg-black/20 text-gray-400 hover:text-white'
+                  }`}
+                  onClick={() => handleFileSelect(file)}
+                >
+                  <Code2 className="w-3 h-3" />
+                  <span>{file.name}</span>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleCloseTab(file)
+                    }}
+                    className="hover:text-red-400"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+            </div>
           )}
+
+          {/* Editor or Preview */}
+          <div className="flex-1 overflow-hidden">
+            {showPreview && fileSystem.length > 0 ? (
+              <div className="h-full p-4">
+                <SandpackPreview
+                  files={allProjectFiles}
+                  activeFile={selectedFilePath}
+                  showEditor={false}
+                  onClose={() => setShowPreview(false)}
+                />
+              </div>
+            ) : selectedFile ? (
+              <MonacoEditor
+                value={selectedFile.content || ''}
+                language={getLanguageFromExtension(selectedFile.name.split('.').pop() || '')}
+                onChange={handleEditorChange}
+              />
+            ) : (
+              <div className="h-full flex items-center justify-center bg-black/20">
+                <div className="text-center text-gray-400 max-w-md">
+                  <Code2 className="w-20 h-20 mx-auto mb-6 opacity-20" />
+                  <h2 className="text-xl font-semibold text-white mb-2">
+                    Welcome to Frankenstein.AI Studio
+                  </h2>
+                  <p className="mb-6">
+                    Create files or chat with an AI agent to get started
+                  </p>
+                  <div className="flex gap-3 justify-center">
+                    <button
+                      onClick={() => setShowFileTree(true)}
+                      className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors flex items-center gap-2"
+                    >
+                      <FolderTree className="w-4 h-4" />
+                      Show Files
+                    </button>
+                    <button
+                      onClick={() => setShowChat(true)}
+                      className="px-4 py-2 bg-[#FA6D1B] hover:bg-[#F25C07] text-white rounded-lg transition-colors flex items-center gap-2"
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                      Open Chat
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Chat Panel */}
