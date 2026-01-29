@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { Menu, X, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
+import { UserMenu } from '@/components/auth/UserMenu'
 
 const navigationLinks = [
   { href: '#features', label: 'Features' },
@@ -95,6 +96,8 @@ export function Navigation() {
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-linear-to-r from-[#FA6D1B] to-[#F25C07] group-hover:w-full transition-all duration-300"></span>
                   </Link>
                 ))}
+
+                <UserMenu />
 
                 <Link href="/studio">
                   <button className="relative px-6 py-2 rounded-full overflow-hidden group">

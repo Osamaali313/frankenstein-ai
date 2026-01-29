@@ -7,12 +7,21 @@ import Image from 'next/image'
 
 const agents = [
   {
+    id: 'pinhead',
+    name: 'PinHead',
+    role: 'Digital CTO',
+    image: '/halloween-assets/trick-treat2-img.png',
+    description: 'Strategic technical leader who generates PRDs, Requirements, and Vibe Prompts',
+    specialties: ['Product Strategy', 'Requirements', 'Architecture', 'Documentation'],
+    color: 'from-[var(--color-horror-pink-600)]/20 to-[var(--color-horror-red-600)]/20'
+  },
+  {
     id: 'annabelle',
     name: 'Annabelle',
     role: 'Frontend Specialist',
     image: '/halloween-assets/new1-img.png',
-    description: 'Crafts beautiful React components with elegant, creepy precision.',
-    specialties: ['React', 'TypeScript', 'CSS', 'UI/UX'],
+    description: 'A creepy doll obsessed with pixel-perfect UI/UX and beautiful designs',
+    specialties: ['React', 'TypeScript', 'CSS', 'UI/UX', 'Accessibility'],
     color: 'from-[var(--color-horror-purple-600)]/20 to-[var(--color-horror-purple-900)]/20'
   },
   {
@@ -20,35 +29,26 @@ const agents = [
     name: 'Chucky',
     role: 'Backend Specialist',
     image: '/halloween-assets/new2-img.png',
-    description: 'Brutally efficient with APIs, databases, and server-side logic.',
-    specialties: ['FastAPI', 'Python', 'Databases', 'APIs'],
+    description: 'An aggressive killer doll focused on brutal performance and APIs',
+    specialties: ['Python', 'FastAPI', 'Databases', 'APIs', 'Performance'],
     color: 'from-[var(--color-horror-red-600)]/20 to-[var(--color-horror-red-900)]/20'
-  },
-  {
-    id: 'freddy',
-    name: 'Freddy',
-    role: 'Fullstack Nightmare',
-    image: '/halloween-assets/new3-img.png',
-    description: 'Masters both frontend and backend, creating complete solutions.',
-    specialties: ['Full-stack', 'Architecture', 'Integrations'],
-    color: 'from-green-600/20 to-green-900/20'
   },
   {
     id: 'jason',
     name: 'Jason',
-    role: 'DevOps Slasher',
+    role: 'Business Analyst',
     image: '/halloween-assets/new4-img.png',
-    description: 'Silent but deadly efficient with Docker, CI/CD, and deployments.',
-    specialties: ['Docker', 'CI/CD', 'AWS', 'Kubernetes'],
+    description: 'The silent slasher who cuts through ambiguity to define requirements',
+    specialties: ['Requirements', 'User Stories', 'Edge Cases', 'Process Mapping'],
     color: 'from-blue-600/20 to-blue-900/20'
   },
   {
     id: 'pennywise',
     name: 'Pennywise',
-    role: 'Testing Clown',
+    role: 'Testing Specialist',
     image: '/halloween-assets/new5-img.png',
-    description: 'Finds bugs hiding in dark corners with playful precision.',
-    specialties: ['Jest', 'Cypress', 'QA', 'Testing'],
+    description: 'The dancing clown who finds bugs where you least expect them',
+    specialties: ['Jest', 'Cypress', 'Testing', 'TDD', 'E2E Testing'],
     color: 'from-orange-600/20 to-orange-900/20'
   },
   {
@@ -56,8 +56,8 @@ const agents = [
     name: 'Ghostface',
     role: 'Security Expert',
     image: '/halloween-assets/new6-img.png',
-    description: 'Paranoid about security, hunts vulnerabilities relentlessly.',
-    specialties: ['Auth', 'Encryption', 'Security', 'Audits'],
+    description: 'Hunts down vulnerabilities and security flaws before attackers do',
+    specialties: ['Security', 'Auth', 'Encryption', 'OWASP', 'Pentesting'],
     color: 'from-gray-600/20 to-gray-900/20'
   },
   {
@@ -65,27 +65,9 @@ const agents = [
     name: 'Valak',
     role: 'Project Manager',
     image: '/halloween-assets/trick-treat1-img.png',
-    description: 'Ancient demon nun who commands the development team perfectly.',
-    specialties: ['Coordination', 'Planning', 'Leadership'],
+    description: 'The demonic nun who asks the hard questions and keeps projects on track',
+    specialties: ['Agile', 'Planning', 'Risk Management', 'Sprint Planning'],
     color: 'from-[var(--color-horror-purple-600)]/20 to-[var(--color-horror-pink-600)]/20'
-  },
-  {
-    id: 'pinhead',
-    name: 'Pinhead',
-    role: 'CTO',
-    image: '/halloween-assets/trick-treat2-img.png',
-    description: 'Philosophical cenobite obsessed with perfect architecture.',
-    specialties: ['Architecture', 'Strategy', 'Review'],
-    color: 'from-[var(--color-horror-pink-600)]/20 to-[var(--color-horror-red-600)]/20'
-  },
-  {
-    id: 'jason-analyst',
-    name: 'Jason (Analyst)',
-    role: 'Business Analyst',
-    image: '/halloween-assets/trick-treat3-img.png',
-    description: 'Asks critical questions to understand exact requirements.',
-    specialties: ['Requirements', 'Analysis', 'Planning'],
-    color: 'from-[var(--color-horror-purple-600)]/20 to-blue-600/20'
   }
 ]
 
